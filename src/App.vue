@@ -28,7 +28,7 @@ const { showSidebar } = storeToRefs(uiStore)
         </nav>
       </div>
     </header>
-    <div class="px-12 pt-14">
+    <div class="px-12 pt-14 w-full">
       <RouterView />
     </div>
   </div>
