@@ -1,0 +1,12 @@
+@import './base.css';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+#app {
+  font-family: 'Roboto', sans-serif;
+}
+
+h1 {
+  @apply text-gray-darkgray text-3xl
+}
