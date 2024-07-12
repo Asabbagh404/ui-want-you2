@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import type { Product } from '@/stores/api'
+
 const props = defineProps<{ product: Product }>()
 </script>
 

@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import { useQuery } from "@/utils/useQuery";
 
 const API_URL = import.meta.env.VITE_API_URL as string;
-interface Product {
+export interface Product {
   id: number;
   title: string;
   price: number;

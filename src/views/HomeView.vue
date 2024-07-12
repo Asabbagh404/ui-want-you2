@@ -6,15 +6,27 @@ import VInput from '@/components/design-system/VInput.vue'
 import ProductCard from '@/components/ProductCard.vue'
 import ViewHeader from '@/components/ViewHeader.vue'
 import { computed, onMounted, ref } from 'vue'
+import Dropdown from 'primevue/dropdown'
 
 const store = useApi()
 const { products } = storeToRefs(store)
+
 const productSearch = ref<String | null>(null)
+const soryByOptions = ['Price', 'Name']
+const selectedSortBy = ref<String | null>(soryByOptions[0])
 const currentPage = ref(1)
 
+const productSorted = computed(() => {
+  if (!products.value.data) return []
+  if (selectedSortBy.value === 'Price') {
+    return products.value.data.sort((a, b) => a.price - b.price)
+  }
+  return products.value.data.sort((a, b) => a.title.localeCompare(b.title))
+})
+
 const productsFiltered = computed(() => {
-  if (!productSearch.value || !products.value.data) return products.value.data
-  return products.value.data.filter((product) => {
+  if (!productSearch.value || !productSorted.value) return products.value.data
+  return productSorted.value.filter((product) => {
     return product.title.toLowerCase().includes(productSearch.value.toLowerCase()) || product.category.toLowerCase().includes(productSearch.value.toLowerCase())
   })
 })
@@ -27,6 +39,7 @@ const productPaginated = computed(() => {
   return productsFiltered.value.slice(start, end)
 })
 
+
 onMounted(async () => {
   await products.value.fetch()
 })
@@ -35,11 +48,18 @@ onMounted(async () => {
 <template>
   <main class="w-full">
     <ViewHeader title="Products" />
-    <VInput v-model="productSearch" placeholder="Search products by name or keyword..." class="!w-[400px]">
-      <template #icon>
-        <IconSearch />
-      </template>
-    </VInput>
+    <div class="flex justify-between">
+      <VInput v-model="productSearch" placeholder="Search products by name or keyword..." class="!w-[400px]">
+        <template #icon>
+          <IconSearch />
+        </template>
+      </VInput>
+      <div class="flex gap-2">
+        Sort by:
+        <Dropdown v-model="selectedSortBy" class="md:w-[14rem] flex items-center" :options="soryByOptions"
+          :placeholder="'Sort by:' + selectedSortBy" />
+      </div>
+    </div>
     <VSuspense :error="products.error" :is-loading="products.loading">
       <div class="flex flex-wrap gap-5 mt-11">
         <template v-for="product of productPaginated" :key="product.id">
