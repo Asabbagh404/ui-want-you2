@@ -11,7 +11,7 @@ export default {
         gray: {
           darkgray: '#2B2B33',
           lightgray: "#F1F1F4",
-          primary: "#F1F1F4"
+          primary: "#A8A8AB"
         },
         secondary: {
           red: '#F53D6B',

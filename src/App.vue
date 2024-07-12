@@ -12,7 +12,7 @@ const { showSidebar } = storeToRefs(uiStore)
 <template>
   <div class="flex">
     <header class="items-start">
-      <div class="pl-11 py-11 bg-gray-primary h-screen w-[370px] transition-all overflow-hidden"
+      <div class="pl-11 py-11 bg-gray-lightgray h-screen w-[370px] transition-all overflow-hidden"
         :class="{ '!w-0': !showSidebar }">
         <IconLogo class="mb-9" />
         <nav class="flex flex-col gap-9 text-xl font-bold">
@@ -28,7 +28,7 @@ const { showSidebar } = storeToRefs(uiStore)
         </nav>
       </div>
     </header>
-    <div class="px-12 pt-14 w-full">
+    <div class="px-12 py-14 w-full">
       <RouterView />
     </div>
   </div>
