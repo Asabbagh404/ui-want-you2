@@ -10,12 +10,14 @@ import Dropdown from 'primevue/dropdown'
 
 const store = useApi()
 const { products } = storeToRefs(store)
+onMounted(async () => {
+  await products.value.fetch()
+})
 
-const productSearch = ref<String | null>(null)
-const soryByOptions = ['Price', 'Name']
-const selectedSortBy = ref<String | null>(soryByOptions[0])
 const currentPage = ref(1)
 
+const soryByOptions = ['Price', 'Name']
+const selectedSortBy = ref<String | null>(soryByOptions[0])
 const productSorted = computed(() => {
   if (!products.value.data) return []
   if (selectedSortBy.value === 'Price') {
@@ -24,6 +26,7 @@ const productSorted = computed(() => {
   return products.value.data.sort((a, b) => a.title.localeCompare(b.title))
 })
 
+const productSearch = ref<String | null>(null)
 const productsFiltered = computed(() => {
   if (!productSearch.value || !productSorted.value) return products.value.data
   return productSorted.value.filter((product) => {
@@ -38,11 +41,6 @@ const productPaginated = computed(() => {
   const end = start + elementPerPage
   return productsFiltered.value.slice(start, end)
 })
-
-
-onMounted(async () => {
-  await products.value.fetch()
-})
 </script>
 
 <template>
@@ -56,8 +54,11 @@ onMounted(async () => {
       </VInput>
       <div class="flex gap-2">
         Sort by:
-        <Dropdown v-model="selectedSortBy" class="md:w-[14rem] flex items-center" :options="soryByOptions"
-          :placeholder="'Sort by:' + selectedSortBy" />
+        <Dropdown 
+        v-model="selectedSortBy" 
+        class="md:w-[14rem] flex items-center" 
+        :options="soryByOptions"
+        :placeholder="'Sort by:' + selectedSortBy" />
       </div>
     </div>
     <VSuspense :error="products.error" :is-loading="products.loading">
@@ -79,7 +80,6 @@ onMounted(async () => {
           " @click="currentPage++"></i>
         </div>
       </div>
-
     </VSuspense>
   </main>
 </template>
